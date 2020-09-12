@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "ABOUT - Nahrávání souboru";
+}
+    <div style="background-color:lightgoldenrodyellow">
+        <h2>ABOUT - FileUpload</h2>
+        <h3>@ViewBag.Message</h3>
+        @using (Html.BeginForm("FileUploadAbout", "Translation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary();
+            <ol>
+                <li class="lifile">
+                    <input type="file" id="fileToUpload" name="file" />
+                    <span class="field-validation-error" id="spanfile"></span>
+                </li>
+            </ol>
+            <input type="submit" id="btnSubmit" value="Upload" />
+        }
+        <hr />
+        @Html.ActionLink("Database | ", "FileUpload")
+        @Html.ActionLink("About | ", "FileUploadAbout")
+        @Html.ActionLink("Help", "FileUploadHelp")
+        @Html.ActionLink("Corpus", "FileUploadCorpus")
+    </div>
+
+        <script type="text/jscript">
+            //get file size
+            function GetFileSize(fileid) {
+                try {
+                    var fileSize = 0;
+                    //for IE
+                    if ($.browser.msie) {
+                        //before making an object of ActiveXObject,
+                        //please make sure ActiveX is enabled in your IE browser
+                        var objFSO = new ActiveXObject("Scripting.FileSystemObject"); var filePath = $("#" + fileid)[0].value;
+                        var objFile = objFSO.getFile(filePath);
+                        var fileSize = objFile.size; //size in kb
+                        fileSize = fileSize / 1048576; //size in mb
+                    }
+                    //for FF, Safari, Opeara and Others
+                    else {
+                        fileSize = $("#" + fileid)[0].files[0].size //size in kb
+                        fileSize = fileSize / 1048576; //size in mb
+                    }
+                    return fileSize;
+                }
+                catch (e) {
+                    alert("Error is :" + e);
+                }
+            }
+
+            //get file path from client system
+            function getNameFromPath(strFilepath) {
+                var objRE = new RegExp(/([^\/\\]+)$/);
+                var strName = objRE.exec(strFilepath);
+
+                if (strName == null) {
+                    return null;
+                }
+                else {
+                    return strName[0];
+                }
+            }
+
+            $("#btnSubmit").live("click", function () {
+                if ($('#fileToUpload').val() == "") {
+                    $("#spanfile").html("Please upload file");
+                    return false;
+                }
+                else {
+                    return checkfile();
+                }
+            });
+
+
+            
+            function checkfile() {
+                var file = getNameFromPath($("#fileToUpload").val());
+                if (file != null) {
+                    var extension = file.substr((file.lastIndexOf('.') + 1));
+                    // alert(extension);
+                    switch (extension) {
+                        case 'txt':
+                            flag = true;
+                            break;
+                        default:
+                            flag = false;
+                    }
+                }
+                if (flag == false) {
+                    $("#spanfile").text("You can upload only txt extension file");
+                    return false;
+                }
+                else {
+                    var size = GetFileSize('fileToUpload');
+                    if (size > 3) {
+                        $("#spanfile").text("You can upload file up to 3 MB");
+                        return false;
+                    }
+                    else {
+                        $("#spanfile").text("");
+                    }
+                }
+            }
+
+            $(function () {
+                $("#fileToUpload").change(function () {
+                    checkfile();
+                });
+            });
+        </script>

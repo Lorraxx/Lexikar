@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <meta name="author" content="Petr Beneš">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    @*<link rel="stylesheet" href="/css/site.css" type="text/css" />*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>LEGILEX-FR</title>
+</head>
+<body style="        height: 100%;
+        background: rgb(9,9,121);
+        background: linear-gradient(0deg, rgba(9,9,121,1) 10%, rgba(70,139,200,1) 80%, rgba(112,230,255,1) 100%);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        padding-bottom: 0;
+        display: flex;
+        flex-direction: column;
+">
+    <div class="navbar-fixed-top navbar" style="background-color: darkblue; ">
+        <style scoped>
+            .wainb a {
+                color: white;
+            }
+            /*            .wainb a:focus:hover, .wainb a:hover {
+                    color: navajowhite;
+                    font-weight: bold;
+                }*/
+            .bwh a:focus:hover, .bwh a:hover {
+                color: black;
+                font-weight: bold;
+            }
+        </style>
+        <div class="container wainb">
+            <div class="navbar-header">
+                @Html.ActionLink("LEGILEX-FR", "Index", "Translation", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse bwh">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Domů", "Index", "Translation")</li>
+                    <li>@Html.ActionLink("O aplikaci", "About", "Translation")</li>
+                    <li>@Html.ActionLink("Help", "Help", "Translation")</li>
+                    @*<li>@Html.ActionLink("Nahrát CSV", "FileUpload", "Translation")</li>*@
+                    @*<li>@Html.ActionLink("Kontakt", "Contact", "Translation")</li>*@
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="height:100%; padding-left: 15px; padding-right: 15px; padding-top:50px">
+        <div style="height: 100%;">
+            @RenderBody()
+        </div>
+
+        @*<div class="container" style="background-color: aliceblue; flex: 1">
+                <footer style="width:100%;">
+                    <p style="text-align: end; padding: 5px">2020 Made by – Petr Beneš</p>
+                    <div style="clear: left"></div>
+                </footer>
+            </div>*@
+    </div>
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

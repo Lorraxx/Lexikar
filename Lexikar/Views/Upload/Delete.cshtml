@@ -1,0 +1,72 @@
+﻿@model Lexikar.Models.CorpusFile
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+    <div class="well well-lg" style="background-color: white">
+        <h1>Delete</h1>
+
+        <div style="display:none" id="loginfail" class="alert alert-danger alert-dismissible" role="alert">
+            You are not logged in! <a href="/legilex-fr/Login">LOGIN</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <h4>CorpusFile</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="ID" />
+                <input type="hidden" class="pass" name="Pass" value="" />
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                <a asp-action="Index">Back to List</a>
+            </form>
+        </div>
+    </div>
+<script>
+     // Do not store passwords like this, use tonkes.
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var secret = getCookie("secret");
+        if (secret != "") {
+            var elements = document.getElementsByClassName("pass");
+            l = elements.length;
+            for (i = 0; i < l; i++) {
+                elements[i].value = secret;
+            }
+        }
+        else {
+            document.getElementById("loginfail").style.display = "block";
+        }
+    }
+
+    window.onload = checkCookie;
+</script>

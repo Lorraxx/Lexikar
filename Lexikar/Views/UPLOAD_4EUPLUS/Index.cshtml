@@ -1,0 +1,305 @@
+﻿
+@model IEnumerable<Lexikar.Models.CorpusFile>
+@{
+    ViewBag.Title = "File upload";
+}
+<style>
+    #btnSubmit {
+        float: right;
+    }
+
+    .well, .container {
+        overflow: hidden;
+    }
+
+    .container, .row, .row > div, .col-sm-6 {
+        height: inherit;
+    }
+
+    .col-sm-6, .well-lg {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .col-sm-6 {
+        flex: 1;
+    }
+
+    .forms, .files {
+        flex: 1;
+        padding-left: 5px;
+        padding-right: 5px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .headerbox {
+        display: flex;
+    }
+
+    .headerbox > h2 {
+        flex: 1;
+        text-align: center;
+    }
+</style>
+<div class="container">
+    <div class="row well well-lg" style="background-color: lightgray">
+        <div>
+            <div style="display:none" id="loginfail" class="alert alert-danger alert-dismissible" role="alert">
+                You are not logged in! <a href="/legilex-fr/Login">LOGIN</a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @if (ViewBag.CorpusErrorConflictingNames != null && ViewBag.CorpusErrorConflictingNames.Count > 0)
+            {
+                <style>
+                    .alert-danger ol, .alert-danger li {
+                        display: inline-block;
+                    }
+                </style>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    There are already corpus files in the database with the same name:
+                    <ol>
+                        @foreach (var item in ViewBag.CorpusErrorConflictingNames)
+                        {
+                            <li>@item</li>
+                        }
+                    </ol>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    @ViewBag.Error
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    @ViewBag.Message
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <div class="col-sm-6">
+                <div class="well well-sm headerbox">
+                    <h2>File upload</h2>
+                </div>
+                <div class="forms well">
+                    <div class="well">
+                        <h3>Termbase</h3>
+                        <h4>@ViewBag.Message</h4>
+                        @using (Html.BeginForm("FileUploadLex", "UPLOAD_4EUPLUS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <ol>
+                                <li class="lifile">
+                                    <input type="file" id="fileToUpload" name="Lex" />
+                                    <span class="field-validation-error" id="spanfile"></span>
+                                </li>
+                            </ol>
+                            <input type="hidden" class="pass" value="" name="Pass" />
+                            <input type="submit" id="btnSubmit" value="Upload" />
+                        }
+                    </div>
+
+                    <div class="well">
+                        <h3>Corpus</h3>
+                        @using (Html.BeginForm("FileUploadCorpus", "UPLOAD_4EUPLUS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <ol>
+                                <li class="lifile">
+                                    <input type="file" id="fileToUpload" name="Corpus" multiple />
+                                    <span class="field-validation-error" id="spanfile"></span>
+                                </li>
+                            </ol>
+                            <span>Hold Ctrl to select more than one file.</span>
+                            <input type="hidden" class="pass" value="" name="Pass" />
+                            <input type="submit" id="btnSubmit" value="Upload" />
+                        }
+                    </div>
+
+                    <div class="well">
+                        <h3>About</h3>
+                        @using (Html.BeginForm("FileUploadAbout", "UPLOAD_4EUPLUS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <ol>
+                                <li class="lifile">
+                                    <input type="file" id="fileToUpload" name="About" />
+                                    <span class="field-validation-error" id="spanfile"></span>
+                                </li>
+                            </ol>
+                            <input type="hidden" class="pass" value="" name="Pass" />
+                            <input type="submit" id="btnSubmit" value="Upload" />
+                        }
+                    </div>
+
+                    <div class="well">
+                        <h3>Help</h3>
+                        @using (Html.BeginForm("FileUploadHelp", "UPLOAD_4EUPLUS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <ol>
+                                <li class="lifile">
+                                    <input type="file" id="fileToUpload" name="Help" />
+                                    <span class="field-validation-error" id="spanfile"></span>
+                                </li>
+                            </ol>
+                            <input type="hidden" class="pass" value="" name="Pass" />
+                            <input type="submit" id="btnSubmit" value="Upload" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="well well-sm headerbox">
+                    <h2>Corpus files</h2>
+                </div>
+                <div class="files well" style="flex: 1">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @*<a asp-action="Details" asp-route-id="@item.ID">Details</a> |*@
+                                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <script type="text/jscript">    // Duplicite script. Put in separate file.
+        //get file size
+        function GetFileSize(file) {
+            try {
+                var fileSize = 0;
+                fileSize = file[0].files[0].size //size in kb
+                fileSize = fileSize / 1048576; //size in mb
+                return fileSize;
+            }
+            catch (e) {
+                alert("Error is :" + e);
+            }
+        }
+
+        //get file path from client system
+        function getNameFromPath(strFilepath) {
+            var objRE = new RegExp(/([^\/\\]+)$/);
+            var strName = objRE.exec(strFilepath);
+
+            if (strName == null) {
+                return null;
+            }
+            else {
+                return strName[0];
+            }
+        }
+
+        $("form").on("click", "#btnSubmit", function () {
+            if ($(this).closest("form").find('#fileToUpload').val() == "") {
+                $(this).closest("form").find("#spanfile").html("Please upload file");
+                return false;
+            }
+            else {
+                return checkfile($(this).closest("form").find('#fileToUpload'));
+            }
+        });
+
+        function checkfile(changedEl) {
+            var file = $(changedEl).val();
+            if (file != null) {
+                var extension = file.substr((file.lastIndexOf('.') + 1));
+
+                if ($(changedEl).attr("name") === "Lex" && extension !== "csv") {
+                    $(changedEl).closest("form").find("#spanfile").text("You can upload only csv extension file");
+                    return false;
+                }
+                else if ($(changedEl).attr("name") === "Lex" && extension === "csv") {
+                    flag = true;
+                }
+                else if (extension !== "txt") {
+                    $(changedEl).closest("form").find("#spanfile").text("You can upload only txt extension file");
+                    return false;
+                }
+                else if (extension === "txt") {
+                    flag = true;
+                }
+                if (flag) {
+                    var size = GetFileSize($(changedEl).closest("form").find('#fileToUpload'));
+                    if (size > 30) {
+                        $(changedEl).closest("form").find("#spanfile").text("You can upload file up to 30 MB");
+                        return false;
+                    }
+                    else {
+                        $(changedEl).closest("form").find("#spanfile").text("");
+                    }
+                }
+            }
+        }
+
+        $(function () {
+            $("[id=fileToUpload]").change(function () {
+                checkfile(this);
+            });
+        });
+
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            var secret = getCookie("secret");
+            if (secret != "") {
+                var elements = document.getElementsByClassName("pass");
+                l = elements.length;
+                for (i = 0; i < l; i++) {
+                    elements[i].value = secret;
+                }
+            }
+            else {
+                document.getElementById("loginfail").style.display = "block";
+            }
+        }
+
+        window.onload = checkCookie;
+
+    </script>

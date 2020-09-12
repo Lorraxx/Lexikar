@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Nahrávání všech souborů";
+}
+
+<div class="row">
+    <div class="well well-lg" style="background-color: lightgray">
+        <div class="well">
+            <h2>FileUpload</h2>
+            <h3>@ViewBag.Message</h3>
+            @using (Html.BeginForm("Upload", "Translation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary();
+                <ul>
+                    <li class="lifile">
+                        <input type="file" id="fileToUpload" name="Lex" />
+                        <label></label>
+                        <span class="field-validation-error" id="spanfile"></span>
+                    </li>
+                    <li>
+                        <input type="file" id="fileToUpload" name="Corpus" />
+                        <span class="field-validation-error" id="spanfile"></span>
+                    </li>
+                    <li>
+                        <input type="file" id="fileToUpload" name="Help" />
+                        <span class="field-validation-error" id="spanfile"></span>
+                    </li>
+                    <li>
+                        <input type="file" id="fileToUpload" name="About" />
+                        <span class="field-validation-error" id="spanfile"></span>
+                    </li>
+                </ul>
+                <input type="submit" id="btnSubmit" value="Upload" />
+            }
+        </div>
+    </div>
+</div>

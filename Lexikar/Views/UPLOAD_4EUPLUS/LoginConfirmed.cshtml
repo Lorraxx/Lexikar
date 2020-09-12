@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<div class="container">
+    <div class="row well well-lg" style="background-color: lightgray">
+        <div class="well">
+            @if (!String.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    @ViewBag.Error
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <a href="/4EUPLUS-LEX/Login">Back to login page</a>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    @ViewBag.Message
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="display:none" id="secret">@ViewBag.Secret</div>
+                <a href="/4EUPLUS-LEX/Upload">Continue to administration</a>
+            }
+        </div>
+    </div>
+</div>
+
+<script> // Duplicite script. Put in separate file.
+    // Do not store passwords like this!
+    function loadSecret() {
+        var x = document.getElementById("secret").textContent;  // Use descriptive variable names, not 'x'.
+        setCookie("secret", x, 1);
+    }
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    window.onload = loadSecret;
+</script>
